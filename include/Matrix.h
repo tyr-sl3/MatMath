@@ -93,7 +93,7 @@ T Matrix<T, H, W>::operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKE
   return buffer_[y * W + x];
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W> Matrix<T, H, W>::identity() noexcept {
+Matrix<T, H, W> Matrix<T, H, W>::identity() {
   static_assert(H > 0, "Matrix height must be superior than 0");
   static_assert(W > 0, "Matrix width must be superior than 0");
   static_assert(H == W, "Can't get identity matrix with H != W");
