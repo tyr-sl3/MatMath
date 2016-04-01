@@ -5,7 +5,7 @@ SRC=main.cc
 
 all: debug
 	
-debug:
+debug: clean
 	@$(CC) $(FLAGS) -g $(SRC) -o $(EXEC)
 
 release:
