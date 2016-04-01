@@ -1,7 +1,7 @@
 #ifndef __DYNAMIC_MATRIX_H__
 #define __DYNAMIC_MATRIX_H__
 
-#include <IMatrix.h> // IMatrix
+#include "IMatrix.h" // IMatrix
 
 #include <cassert> // assert
 #include <vector>  // std::vector
