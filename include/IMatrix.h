@@ -13,11 +13,10 @@ constexpr bool TYPE_CHECKED = false;
 //! @brief Interface for matrix classes
 template <typename T>
 class IMatrix {
-#ifndef NO_TYPE_CHECK
-  static_assert(std::is_arithmetic<T>::value, "Invalid type: expected arithmetic type");
-#endif // NO_TYPE_CHECK
-
+  static_assert(!TYPE_CHECKED || std::is_arithmetic<T>::value, "Invalid type: expected arithmetic type");
 public:
+  using value_type = T;
+  
   //! @brief Default ctor
   IMatrix() = default;
 
