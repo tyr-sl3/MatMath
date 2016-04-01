@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['operator_28_29',['operator()',['../class_dynamic_matrix.html#a56b2dea8c49d5318db4e5026c22c41dd',1,'DynamicMatrix::operator()(unsigned y, unsigned x) noexcept override'],['../class_dynamic_matrix.html#af25248e8cfb4a5e2047f26f2a289a6d3',1,'DynamicMatrix::operator()(unsigned y, unsigned x) const  noexcept(TYPE_CHECKED) override'],['../class_i_matrix.html#a35a47b9e820c6ccbb42046a8a85f2baa',1,'IMatrix::operator()(unsigned y, unsigned x) noexcept=0'],['../class_i_matrix.html#a4848c117dd673a2a296dc6e7c55ab5a8',1,'IMatrix::operator()(unsigned y, unsigned x) const  noexcept(TYPE_CHECKED)=0'],['../class_matrix.html#ac0131428662ba940b2bb92d8a5b60b45',1,'Matrix::operator()(unsigned y, unsigned x) noexcept override'],['../class_matrix.html#a22d127a17a5791c842da5d77464eee31',1,'Matrix::operator()(unsigned y, unsigned x) const  noexcept(TYPE_CHECKED) override']]],
+  ['operator_3d',['operator=',['../class_dynamic_matrix.html#a4898a8a6170973b4772b6ef41c2371c2',1,'DynamicMatrix']]]
+];
