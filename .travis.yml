@@ -1,6 +1,4 @@
 install:
   - export CXX="g++-5"
 language: cpp
-compiler: gcc-5
 script: make
-
