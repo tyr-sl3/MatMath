@@ -19,7 +19,7 @@ public:
   //! @brief Ctor
   //! @param mat    Matrix as initializer_list
   //! @throws Anything std::copy can throw
-  Matrix(std::initializer_list<T> mat); // TODO - Fix const bug
+  Matrix(std::initializer_list<T> const& mat); // TODO - Fix const bug
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
@@ -66,7 +66,7 @@ Matrix<T, H, W>::Matrix() {
   std::fill(buffer_.begin(), buffer_.end(), T{});
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>::Matrix(std::initializer_list<T> mat) {
+Matrix<T, H, W>::Matrix(std::initializer_list<T> const& mat) {
   static_assert(H > 0, "Matrix height must be superior than 0");
   static_assert(W > 0, "Matrix width must be superior than 0");
   assert(mat.size() == H * W && "Invalid matrix size");
