@@ -18,7 +18,7 @@ public:
   //! @param value    Default value (optional)
   //! @pre    Height and width must be superior than 0
   //! @throws Anything std::fill can throw
-  DynamicMatrix(unsigned height, unsigned width, unsigned value = T{});
+  DynamicMatrix(unsigned height, unsigned width, T value = T{});
 
   //! @brief Op=
   //! @param mat      Matrix as initializer_list
@@ -69,7 +69,7 @@ private:
 };
 
 template <typename T>
-DynamicMatrix<T>::DynamicMatrix(unsigned height, unsigned width, unsigned value) : width_(width), height_(height), buffer_(width_ * height_) {
+DynamicMatrix<T>::DynamicMatrix(unsigned height, unsigned width, T value) : width_(width), height_(height), buffer_(width_ * height_) {
   assert(height > 0 && "Matrix height can't be null");
   assert(width > 0 && "Matrix width can't be null");
   std::fill(buffer_.begin(), buffer_.end(), value);
