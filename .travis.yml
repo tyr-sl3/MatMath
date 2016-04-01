@@ -1,5 +1,5 @@
 install:
-  - export CXX="g++-5"
+  - export CXX="clang-3.7"
 language: cpp
 compiler: gcc
 script: make
