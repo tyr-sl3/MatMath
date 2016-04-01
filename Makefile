@@ -1,4 +1,4 @@
-CXX=g++
+CXX=g++-5
 EXEC=matmath
 FLAGS=-std=c++1y -Wall -Wextra -Werror -pedantic-errors -Winit-self -Wswitch-default -Wswitch-enum -Wundef -Winline -Wunused -Wuninitialized
 SRC=main.cc
