@@ -1,6 +1,6 @@
 install:
   - export CXX="clang-3.7"
 language: cpp
-compiler: gcc
+compiler: clang
 script: make
 
