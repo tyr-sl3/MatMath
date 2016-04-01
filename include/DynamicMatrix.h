@@ -24,7 +24,7 @@ public:
   //! @param mat      Matrix as initializer_list
   //! @returns Current instance
   //! @throws Anything std::copy can throw
-  DynamicMatrix& operator=(std::initializer_list<T> const& mat); // TODO - Fix const bug
+  DynamicMatrix& operator=(std::initializer_list<T> const& mat);
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
@@ -51,7 +51,7 @@ public:
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
   //! @pre X must be inferior than matrix width
-  //! @throws Anything as long as NO_TYPE_CHECK is not defined
+  //! @throws Nothing as long as NO_TYPE_CHECK is not defined
   T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) override;
 
   //! @brief Resize the matrix
