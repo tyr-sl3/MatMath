@@ -1,7 +1,7 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include "imatrix.h" // IMatrix
+#include <IMatrix.h> // IMatrix
 
 #include <array>   // std::array
 #include <cassert> // assert
