@@ -16,8 +16,8 @@ class IMatrix {
 #ifndef NO_TYPE_CHECK
   static_assert(std::is_arithmetic<T>::value, "Invalid type: expected arithmetic type");
 #endif // NO_TYPE_CHECK
-public:
 
+public:
   //! @brief Default ctor
   IMatrix() = default;
 
