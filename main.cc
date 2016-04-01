@@ -18,13 +18,13 @@ template <typename T>
 using Mat33 = Matrix<T, 3, 3>;
 
 int main() {
-  const Mat33<int> mat1 = {
+  Mat33<int> mat1 = {
     1, 2, 3,
     4, 5, 6,
     7, 8, 9
   };
   std::cout << "mat1:\n" << mat1 << "\n";
-  const Mat33<int> mat2 = {
+  Mat33<int> mat2 = {
     3, 2, 1,
     6, 5, 4,
     9, 8, 7
