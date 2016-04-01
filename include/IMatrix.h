@@ -45,7 +45,7 @@ public:
   //! @param y  Y index
   //! @param x X index
   //! @returns Value at (y, x)
-  //! @throws Anything as long as NO_TYPE_CHECK is not defined
+  //! @throws Nothing as long as NO_TYPE_CHECK is not defined
   virtual T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) = 0;
 };
 
