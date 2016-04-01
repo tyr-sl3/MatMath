@@ -24,7 +24,7 @@ public:
   //! @param mat      Matrix as initializer_list
   //! @returns Current instance
   //! @throws Anything std::copy can throw
-  DynamicMatrix& operator=(std::initializer_list<T> const& mat);
+  DynamicMatrix& operator=(std::initializer_list<T> mat); // TODO - Fix const bug
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
