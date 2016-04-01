@@ -19,7 +19,7 @@ public:
   //! @brief Ctor
   //! @param mat    Matrix as initializer_list
   //! @throws Anything std::copy can throw
-  Matrix(std::initializer_list<T>& mat); // TODO - Fix const bug
+  Matrix(std::initializer_list<T> const& mat); // TODO - Fix const bug
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
