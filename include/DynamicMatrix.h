@@ -75,7 +75,7 @@ DynamicMatrix<T>::DynamicMatrix(unsigned height, unsigned width, unsigned value)
   std::fill(buffer_.begin(), buffer_.end(), value);
 }
 template <typename T>
-DynamicMatrix<T>& DynamicMatrix<T>::operator=(std::initializer_list<T> const mat) {
+DynamicMatrix<T>& DynamicMatrix<T>::operator=(std::initializer_list<T> mat) {
   assert(mat.size() == height_ * width_ && "Invalid matrix size");
   std::copy(mat.begin(), mat.end(), buffer_.begin());
   return *this;
