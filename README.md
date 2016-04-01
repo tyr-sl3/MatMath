@@ -4,7 +4,7 @@ There's two types of matrices :
 - Matrix: Buffer allocated on the stack => Exception safety
 - DynamicMatrix: Buffer allocated on the heap => No exception safety
 
-**Note:** By default, only arithmetic types are allowed to ensure more exception safety. You can disallow this verification by using:
+**Note:** By default, only arithmetic types are allowed to ensure more exception safety. You can disallow this verification by defining NO_TYPE_CHECK. Example:
 ```sh
 clang++ -std=c++14 -DNO_TYPE_CHECK main.cc -o matmath
 ```
