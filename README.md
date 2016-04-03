@@ -1,6 +1,6 @@
 # MatMath (Work in progress!)
 C++ API for math operations on matrices.
-There's two types of matrices :
+There's two types of matrices:
 - Matrix: Buffer allocated on the stack => More exception safety
 - DynamicMatrix: Buffer allocated on the heap => Less exception safety
 
