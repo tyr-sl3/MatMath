@@ -1,8 +1,8 @@
 # MatMath (Work in progress!)
 C++ API for math operations on matrices.
 There's two types of matrices :
-- Matrix: Buffer allocated on the stack => Exception safety
-- DynamicMatrix: Buffer allocated on the heap => No exception safety
+- Matrix: Buffer allocated on the stack => More exception safety
+- DynamicMatrix: Buffer allocated on the heap => Less exception safety
 
 **Note:** By default, only arithmetic types are allowed to ensure more exception safety. You can disallow this verification by defining NO_TYPE_CHECK. Example:
 ```sh
