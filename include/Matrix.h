@@ -15,7 +15,7 @@ class Matrix final : public IMatrix<T> {
 public:
   //! @brief Default ctor
   //! @throws Anything std::fill can throw
-  Matrix();
+  Matrix(T const& val = T{});
 
   //! @brief Ctor
   //! @param mat Matrix as initializer_list
@@ -69,8 +69,8 @@ private:
 };
 
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>::Matrix() {
-  std::fill(buffer_.begin(), buffer_.end(), T{});
+Matrix<T, H, W>::Matrix(T const& val) {
+  std::fill(buffer_.begin(), buffer_.end(), val);
 }
 template <typename T, unsigned H, unsigned W>
 Matrix<T, H, W>::Matrix(std::initializer_list<T> const& mat) {
