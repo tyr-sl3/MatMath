@@ -17,9 +17,10 @@ public:
   Matrix();
 
   //! @brief Ctor
-  //! @param mat    Matrix as initializer_list
+  //! @param mat Matrix as initializer_list
+  //! @pre mat.size() must be equal to H * W
   //! @throws Anything std::copy can throw
-  Matrix(std::initializer_list<T> const& mat); // TODO - Fix const bug
+  Matrix(std::initializer_list<T> const& mat);
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
@@ -32,7 +33,7 @@ public:
   unsigned height() const noexcept override;
 
   //! @brief Indexer (read / write)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
@@ -41,7 +42,7 @@ public:
   T& operator()(unsigned y, unsigned x) noexcept override;
 
   //! @brief Indexer (read only)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
@@ -56,6 +57,11 @@ public:
   //! @endcode
   //! @throws Anything Matrix ctor can throw
   static Matrix identity();
+
+  Matrix& operator+=(T const& val) noexcept(TYPE_CHECKED);
+  Matrix& operator-=(T const& val) noexcept(TYPE_CHECKED);
+  Matrix& operator*=(T const& val) noexcept(TYPE_CHECKED);
+  Matrix& operator/=(T const& val) noexcept(TYPE_CHECKED);
 
 private:
   std::array<T, H * W> buffer_;
@@ -103,27 +109,70 @@ Matrix<T, H, W> Matrix<T, H, W>::identity() {
   }
   return mat;
 }
-
 template <typename T, unsigned H, unsigned W>
-auto operator+(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) noexcept {
+Matrix<T, H, W>& Matrix<T, H, W>::operator+=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v += val; });
+  return *this;
+}
+template <typename T, unsigned H, unsigned W>
+Matrix<T, H, W>& Matrix<T, H, W>::operator-=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v -= val; });
+  return *this;
+}
+template <typename T, unsigned H, unsigned W>
+Matrix<T, H, W>& Matrix<T, H, W>::operator*=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v *= val; });
+  return *this;
+}
+template <typename T, unsigned H, unsigned W>
+Matrix<T, H, W>& Matrix<T, H, W>::operator/=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v /= val; });
+  return *this;
+}
+
+template <typename T, unsigned H, unsigned W, typename Fun>
+inline auto apply(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2, Fun f) noexcept(TYPE_CHECKED) {
   Matrix<T, H, W> mat;
   for (unsigned j{}; j < mat.height(); j++) {
     for (unsigned i{}; i < mat.width(); i++) {
-       mat(j, i) = m1(j, i) + m2(j, i);
+       mat(j, i) = f(m1(j, i), m2(j, i));
     }
   }
   return mat;
 }
 
 template <typename T, unsigned H, unsigned W>
+auto operator+(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) noexcept {
+  return apply(m1, m2, [](T const& a, T const& b) { return a + b; });
+}
+
+template <typename T, unsigned H, unsigned W>
 auto operator-(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) noexcept {
-  Matrix<T, H, W> mat;
-  for (unsigned j{}; j < mat.height(); j++) {
-    for (unsigned i{}; i < mat.width(); i++) {
-       mat(j, i) = m1(j, i) - m2(j, i);
-    }
-  }
-  return mat;
+  return apply(m1, m2, [](T const& a, T const& b) { return a - b; });
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator+(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat += val);
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator-(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat -= val);
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator*(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat *= val);
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator/(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat /= val);
 }
 
 template <typename T, unsigned M, unsigned N, unsigned P>

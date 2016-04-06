@@ -3,6 +3,7 @@
 
 #include "IMatrix.h" // IMatrix
 
+#include <algorithm> // std::for_each
 #include <cassert> // assert
 #include <vector>  // std::vector
 
@@ -13,18 +14,18 @@ template <typename T>
 class DynamicMatrix final : public IMatrix<T> {
 public:
   //! @brief Ctor
-  //! @param height  Matrix height
-  //! @param width    Matrix width
-  //! @param value    Default value (optional)
-  //! @pre    Height and width must be superior than 0
+  //! @param height Matrix height
+  //! @param width  Matrix width
+  //! @param value  Default value (optional)
+  //! @pre Height and width must be superior than 0
   //! @throws Anything std::fill can throw
-  DynamicMatrix(unsigned height, unsigned width, unsigned value = T{});
+  DynamicMatrix(unsigned height, unsigned width, T value = T{});
 
   //! @brief Op=
-  //! @param mat      Matrix as initializer_list
+  //! @param mat Matrix as initializer_list
   //! @returns Current instance
   //! @throws Anything std::copy can throw
-  DynamicMatrix& operator=(std::initializer_list<T> const& mat); // TODO - Fix const bug
+  DynamicMatrix& operator=(std::initializer_list<T> const& mat);
 
   //! @brief Getter for matrix width
   //! @returns Matrix width
@@ -37,7 +38,7 @@ public:
   unsigned height() const noexcept override;
 
   //! @brief Indexer (read / write)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
@@ -46,7 +47,7 @@ public:
   T& operator()(unsigned y, unsigned x) noexcept override;
 
   //! @brief Indexer (read only)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
@@ -55,12 +56,17 @@ public:
   T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) override;
 
   //! @brief Resize the matrix
-  //! @param height  Matrix height
-  //! @param width    Matrix width
-  //! @pre    Height must be superior than 0
-  //! @pre    Width must be superior than 0
+  //! @param height Matrix height
+  //! @param width  Matrix width
+  //! @pre Height must be superior than 0
+  //! @pre Width must be superior than 0
   //! @throws Anything ctor can throw
   void resize(unsigned height, unsigned width);
+
+  DynamicMatrix& operator+=(T const& val) noexcept(TYPE_CHECKED);
+  DynamicMatrix& operator-=(T const& val) noexcept(TYPE_CHECKED);
+  DynamicMatrix& operator*=(T const& val) noexcept(TYPE_CHECKED);
+  DynamicMatrix& operator/=(T const& val) noexcept(TYPE_CHECKED);
 
 private:
   unsigned width_;
@@ -69,7 +75,7 @@ private:
 };
 
 template <typename T>
-DynamicMatrix<T>::DynamicMatrix(unsigned height, unsigned width, unsigned value) : width_(width), height_(height), buffer_(width_ * height_) {
+DynamicMatrix<T>::DynamicMatrix(unsigned height, unsigned width, T value) : width_(width), height_(height), buffer_(width_ * height_) {
   assert(height > 0 && "Matrix height can't be null");
   assert(width > 0 && "Matrix width can't be null");
   std::fill(buffer_.begin(), buffer_.end(), value);
@@ -114,29 +120,72 @@ void DynamicMatrix<T>::resize(unsigned height, unsigned width) {
   }
   *this = std::move(cpy);
 }
-
 template <typename T>
-auto operator+(IMatrix<T> const& m1, IMatrix<T> const& m2) noexcept(TYPE_CHECKED) {
-  assert(m1.height() == m2.height() && m1.width() == m2.width() && "Invalid size");
+DynamicMatrix<T>& DynamicMatrix<T>::operator+=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v += val; });
+  return *this;
+}
+template <typename T>
+DynamicMatrix<T>& DynamicMatrix<T>::operator-=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v -= val; });
+  return *this;
+}
+template <typename T>
+DynamicMatrix<T>& DynamicMatrix<T>::operator*=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v *= val; });
+  return *this;
+}
+template <typename T>
+DynamicMatrix<T>& DynamicMatrix<T>::operator/=(T const& val) noexcept(TYPE_CHECKED) {
+  std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v /= val; });
+  return *this;
+}
+
+template <typename T, typename Fun>
+inline auto apply(IMatrix<T> const& m1, IMatrix<T> const& m2, Fun f) noexcept(TYPE_CHECKED) {
+  assert(m1.height() == m2.height() && "Invalid size");
+  assert(m1.width() == m2.width() && "Invalid size");
   DynamicMatrix<T> mat(m1.height(), m1.width());
   for (unsigned j{}; j < mat.height(); j++) {
     for (unsigned i{}; i < mat.width(); i++) {
-       mat(j, i) = m1(j, i) + m2(j, i);
+       mat(j, i) = f(m1(j, i), m2(j, i));
     }
   }
   return mat;
 }
 
 template <typename T>
+auto operator+(IMatrix<T> const& m1, IMatrix<T> const& m2) noexcept(TYPE_CHECKED) {
+  return apply(m1, m2, [](T const& a, T const& b) { return a + b; });
+}
+
+template <typename T>
 auto operator-(IMatrix<T> const& m1, IMatrix<T> const& m2) noexcept(TYPE_CHECKED) {
-  assert(m1.height() == m2.height() && m1.width() == m2.width() && "Invalid size");
-  DynamicMatrix<T> mat(m1.height(), m1.width());
-  for (unsigned j{}; j < mat.height(); j++) {
-    for (unsigned i{}; i < mat.width(); i++) {
-       mat(j, i) = m1(j, i) - m2(j, i);
-    }
-  }
-  return mat;
+  return apply(m1, m2, [](T const& a, T const& b) { return a - b; });
+}
+
+template <typename T>
+auto operator+(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat += val);
+}
+
+template <typename T>
+auto operator-(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat -= val);
+}
+
+template <typename T>
+auto operator*(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat *= val);
+}
+
+template <typename T>
+auto operator/(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
+  auto mat = m;
+  return (mat /= val);
 }
 
 template <typename T>

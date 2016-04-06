@@ -13,11 +13,10 @@ constexpr bool TYPE_CHECKED = false;
 //! @brief Interface for matrix classes
 template <typename T>
 class IMatrix {
-#ifndef NO_TYPE_CHECK
-  static_assert(std::is_arithmetic<T>::value, "Invalid type: expected arithmetic type");
-#endif // NO_TYPE_CHECK
-
+  static_assert(!TYPE_CHECKED || std::is_arithmetic<T>::value, "Invalid type: expected arithmetic type");
 public:
+  using value_type = T;
+
   //! @brief Default ctor
   IMatrix() = default;
 
@@ -35,14 +34,14 @@ public:
   virtual unsigned height() const noexcept = 0;
 
   //! @brief Indexer (read / write)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @throws /
   virtual T& operator()(unsigned y, unsigned x) noexcept = 0;
 
   //! @brief Indexer (read only)
-  //! @param y  Y index
+  //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
   //! @throws Anything as long as NO_TYPE_CHECK is not defined
