@@ -3,8 +3,9 @@
 
 #include "IMatrix.h" // IMatrix
 
-#include <array>   // std::array
-#include <cassert> // assert
+#include <algorithm> // std::for_each
+#include <array>     // std::array
+#include <cassert>   // assert
 
 //! @class Matrix
 //! @brief Non-resizable matrix allocated on the stack
