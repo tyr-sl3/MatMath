@@ -92,5 +92,4 @@ private:
 #include <impl/Matrix_impl.tpp> // Implementation
 #include <impl/Matrix_op.tpp>   // Operators
 
-
 #endif // __MATRIX_H__
