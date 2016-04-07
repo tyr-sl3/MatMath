@@ -77,5 +77,5 @@ inline mat::Matrix<T, M, P> operator*(mat::Matrix<T, M, N> const& m1, mat::Matri
 template <typename T, unsigned M1, unsigned N1, unsigned M2, unsigned N2>
 inline mat::Matrix<T, M1, N2> operator*(mat::Matrix<T, M1, N1> const&, mat::Matrix<T, M2, N2> const&) {
   static_assert(N1 == M2, "Invalid matrix size for operator*");
-  return Matrix<T, M1, N2>{};
+  return mat::Matrix<T, M1, N2>{};
 }
