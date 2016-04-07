@@ -63,10 +63,10 @@ public:
   //! @throws Anything ctor can throw
   void resize(unsigned height, unsigned width);
 
-  DynamicMatrix& operator+=(T const& val) noexcept(TYPE_CHECKED);
-  DynamicMatrix& operator-=(T const& val) noexcept(TYPE_CHECKED);
-  DynamicMatrix& operator*=(T const& val) noexcept(TYPE_CHECKED);
-  DynamicMatrix& operator/=(T const& val) noexcept(TYPE_CHECKED);
+  DynamicMatrix& operator+=(T const& val) noexcept(TYPE_CHECKED) override;
+  DynamicMatrix& operator-=(T const& val) noexcept(TYPE_CHECKED) override;
+  DynamicMatrix& operator*=(T const& val) noexcept(TYPE_CHECKED) override;
+  DynamicMatrix& operator/=(T const& val) noexcept(TYPE_CHECKED) override;
 
 private:
   unsigned width_;
@@ -142,7 +142,7 @@ DynamicMatrix<T>& DynamicMatrix<T>::operator/=(T const& val) noexcept(TYPE_CHECK
 }
 
 template <typename T, typename Fun>
-inline auto apply(IMatrix<T> const& m1, IMatrix<T> const& m2, Fun f) noexcept(TYPE_CHECKED) {
+inline auto apply(IMatrix<T> const& m1, IMatrix<T> const& m2, Fun f) {
   assert(m1.height() == m2.height() && "Invalid size");
   assert(m1.width() == m2.width() && "Invalid size");
   DynamicMatrix<T> mat(m1.height(), m1.width());
@@ -155,37 +155,52 @@ inline auto apply(IMatrix<T> const& m1, IMatrix<T> const& m2, Fun f) noexcept(TY
 }
 
 template <typename T>
-auto operator+(IMatrix<T> const& m1, IMatrix<T> const& m2) noexcept(TYPE_CHECKED) {
+DynamicMatrix<T> operator+(IMatrix<T> const& m1, IMatrix<T> const& m2) {
   return apply(m1, m2, [](T const& a, T const& b) { return a + b; });
 }
 
 template <typename T>
-auto operator-(IMatrix<T> const& m1, IMatrix<T> const& m2) noexcept(TYPE_CHECKED) {
+DynamicMatrix<T> operator-(IMatrix<T> const& m1, IMatrix<T> const& m2) {
   return apply(m1, m2, [](T const& a, T const& b) { return a - b; });
 }
 
 template <typename T>
-auto operator+(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
-  auto mat = m;
+DynamicMatrix<T> operator+(DynamicMatrix<T> const& m, T const& val) {
+  DynamicMatrix<T> mat = m;
   return (mat += val);
 }
 
 template <typename T>
-auto operator-(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
-  auto mat = m;
+DynamicMatrix<T> operator-(DynamicMatrix<T> const& m, T const& val) {
+  DynamicMatrix<T> mat = m;
   return (mat -= val);
 }
 
 template <typename T>
-auto operator*(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
-  auto mat = m;
+DynamicMatrix<T> operator*(DynamicMatrix<T> const& m, T const& val) {
+  DynamicMatrix<T> mat = m;
   return (mat *= val);
 }
 
 template <typename T>
-auto operator/(DynamicMatrix<T> const& m, T const& val) noexcept(TYPE_CHECKED) {
-  auto mat = m;
+DynamicMatrix<T> operator/(DynamicMatrix<T> const& m, T const& val) {
+  DynamicMatrix<T>  mat = m;
   return (mat /= val);
+}
+
+template <typename T>
+DynamicMatrix<T> operator+(T const& val, DynamicMatrix<T> const& m) {
+  return m + val;
+}
+
+template <typename T>
+DynamicMatrix<T> operator-(T const& val, DynamicMatrix<T> const& m) {
+  return m - val;
+}
+
+template <typename T>
+DynamicMatrix<T> operator*(T const& val, DynamicMatrix<T> const& m) {
+  return m * val;
 }
 
 template <typename T>
