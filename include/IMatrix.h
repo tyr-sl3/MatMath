@@ -44,8 +44,28 @@ public:
   //! @param y Y index
   //! @param x X index
   //! @returns Value at (y, x)
-  //! @throws Anything as long as NO_TYPE_CHECK is not defined
+  //! @throws Nothing as long as NO_TYPE_CHECK is not defined
   virtual T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) = 0;
+
+  //! @brief Op+=
+  //! @param val The value to add to the matrix
+  //! @returns Current matrix
+  virtual IMatrix& operator+=(T const& val) = 0;
+
+  //! @brief Op-=
+  //! @param val The value to substract to the matrix
+  //! @returns Current matrix
+  virtual IMatrix& operator-=(T const& val) = 0;
+
+  //! @brief Op*=
+  //! @param val The value we multiply the matrix by
+  //! @returns Current matrix
+  virtual IMatrix& operator*=(T const& val) = 0;
+
+  //! @brief Op/=
+  //! @param val The value we divide the matrix by
+  //! @returns Current matrix
+  virtual IMatrix& operator/=(T const& val) = 0;
 };
 
 #endif // __IMATRIX_H__

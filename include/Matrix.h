@@ -12,10 +12,12 @@
 //! @see IMatrix
 template <typename T, unsigned H, unsigned W>
 class Matrix final : public IMatrix<T> {
+  static_assert(H > 0, "Matrix height must be superior than 0");
+  static_assert(W > 0, "Matrix width must be superior than 0");
 public:
   //! @brief Default ctor
   //! @throws Anything std::fill can throw
-  Matrix(T const& val = T{});
+  explicit Matrix(T const& val = T{});
 
   //! @brief Ctor
   //! @param mat Matrix as initializer_list
@@ -48,7 +50,7 @@ public:
   //! @returns Value at (y, x)
   //! @pre Y must be inferior than matrix height
   //! @pre X must be inferior than matrix width
-  //! @throws Anything as long as NO_TYPE_CHECK is not defined
+  //! @throws Nothing as long as NO_TYPE_CHECK is not defined
   T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) override;
 
   //! @brief Static method returning indentity matrix
@@ -59,10 +61,25 @@ public:
   //! @throws Anything Matrix ctor can throw
   static Matrix identity();
 
-  Matrix& operator+=(T const& val) noexcept(TYPE_CHECKED);
-  Matrix& operator-=(T const& val) noexcept(TYPE_CHECKED);
-  Matrix& operator*=(T const& val) noexcept(TYPE_CHECKED);
-  Matrix& operator/=(T const& val) noexcept(TYPE_CHECKED);
+  //! @brief Op+=
+  //! @param val The value to add to the matrix
+  //! @returns Current matrix
+  Matrix& operator+=(T const& val) override;
+
+  //! @brief Op-=
+  //! @param val The value to substract to the matrix
+  //! @returns Current matrix
+  Matrix& operator-=(T const& val) override;
+
+  //! @brief Op*=
+  //! @param val The value we multiply the matrix by
+  //! @returns Current matrix
+  Matrix& operator*=(T const& val) override;
+
+  //! @brief Op/=
+  //! @param val The value we divide the matrix by
+  //! @returns Current matrix
+  Matrix& operator/=(T const& val) override;
 
 private:
   std::array<T, H * W> buffer_;
@@ -74,8 +91,6 @@ Matrix<T, H, W>::Matrix(T const& val) {
 }
 template <typename T, unsigned H, unsigned W>
 Matrix<T, H, W>::Matrix(std::initializer_list<T> const& mat) {
-  static_assert(H > 0, "Matrix height must be superior than 0");
-  static_assert(W > 0, "Matrix width must be superior than 0");
   assert(mat.size() == H * W && "Invalid matrix size");
   std::copy(mat.begin(), mat.end(), buffer_.begin());
 }
@@ -111,28 +126,28 @@ Matrix<T, H, W> Matrix<T, H, W>::identity() {
   return mat;
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>& Matrix<T, H, W>::operator+=(T const& val) noexcept(TYPE_CHECKED) {
+Matrix<T, H, W>& Matrix<T, H, W>::operator+=(T const& val) {
   std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v += val; });
   return *this;
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>& Matrix<T, H, W>::operator-=(T const& val) noexcept(TYPE_CHECKED) {
+Matrix<T, H, W>& Matrix<T, H, W>::operator-=(T const& val) {
   std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v -= val; });
   return *this;
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>& Matrix<T, H, W>::operator*=(T const& val) noexcept(TYPE_CHECKED) {
+Matrix<T, H, W>& Matrix<T, H, W>::operator*=(T const& val) {
   std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v *= val; });
   return *this;
 }
 template <typename T, unsigned H, unsigned W>
-Matrix<T, H, W>& Matrix<T, H, W>::operator/=(T const& val) noexcept(TYPE_CHECKED) {
+Matrix<T, H, W>& Matrix<T, H, W>::operator/=(T const& val) {
   std::for_each(buffer_.begin(), buffer_.end(), [&](T& v) { v /= val; });
   return *this;
 }
 
 template <typename T, unsigned H, unsigned W, typename Fun>
-inline auto apply(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2, Fun f) noexcept(TYPE_CHECKED) {
+inline auto apply(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2, Fun f) {
   Matrix<T, H, W> mat;
   for (unsigned j{}; j < mat.height(); j++) {
     for (unsigned i{}; i < mat.width(); i++) {
@@ -143,41 +158,56 @@ inline auto apply(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2, Fun f) n
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator+(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) noexcept {
+auto operator+(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) {
   return apply(m1, m2, [](T const& a, T const& b) { return a + b; });
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator-(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) noexcept {
+auto operator-(Matrix<T, H, W> const& m1, Matrix<T, H, W> const& m2) {
   return apply(m1, m2, [](T const& a, T const& b) { return a - b; });
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator+(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+auto operator+(Matrix<T, H, W> const& m, T const& val) {
   auto mat = m;
   return (mat += val);
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator-(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+auto operator-(Matrix<T, H, W> const& m, T const& val) {
   auto mat = m;
   return (mat -= val);
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator*(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+auto operator*(Matrix<T, H, W> const& m, T const& val) {
   auto mat = m;
   return (mat *= val);
 }
 
 template <typename T, unsigned H, unsigned W>
-auto operator/(Matrix<T, H, W> const& m, T const& val) noexcept(TYPE_CHECKED) {
+auto operator/(Matrix<T, H, W> const& m, T const& val) {
   auto mat = m;
   return (mat /= val);
 }
 
+template <typename T, unsigned H, unsigned W>
+auto operator+(T const& val, Matrix<T, H, W> const& m) {
+  return m + val;
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator-(T const& val, Matrix<T, H, W> const& m) {
+  return m - val;
+}
+
+template <typename T, unsigned H, unsigned W>
+auto operator*(T const& val, Matrix<T, H, W> const& m) {
+  return m * val;
+}
+
 template <typename T, unsigned M, unsigned N, unsigned P>
-Matrix<T, M, P> operator*(Matrix<T, M, N> const& m1, Matrix<T, N, P> const& m2) noexcept {
+Matrix<T, M, P> operator*(Matrix<T, M, N> const& m1, Matrix<T, N, P> const& m2) {
   Matrix<T, M, P> result;
   for (unsigned j{}; j < m1.height(); j++) {
     for (unsigned i{}; i < m2.width(); i++) {
@@ -190,7 +220,7 @@ Matrix<T, M, P> operator*(Matrix<T, M, N> const& m1, Matrix<T, N, P> const& m2) 
 }
 
 template <typename T, unsigned M1, unsigned N1, unsigned M2, unsigned N2>
-Matrix<T, M1, N2> operator*(Matrix<T, M1, N1> const&, Matrix<T, M2, N2> const&) noexcept {
+Matrix<T, M1, N2> operator*(Matrix<T, M1, N1> const&, Matrix<T, M2, N2> const&) {
   static_assert(N1 == M2, "Invalid matrix size for operator*");
   return Matrix<T, M1, N2>{};
 }
