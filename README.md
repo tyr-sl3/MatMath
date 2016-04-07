@@ -12,6 +12,7 @@ clang++ -std=c++14 -DNO_TYPE_CHECK main.cc -o matmath
 # Code examples
 Usage of Matrix:
 ```cpp
+using namespace mat;
 const Matrix<int, 3, 3> mat1 = {
   1, 2, 3,
   4, 5, 6,
@@ -28,6 +29,7 @@ const auto identity = Matrix<int, 4, 4>::identity();
 
 Usage of DynamicMatrix:
 ```cpp
+using namespace mat;
 DynamicMatrix<int> mat1(3, 3);
 mat1 = {
   1, 2, 3,
