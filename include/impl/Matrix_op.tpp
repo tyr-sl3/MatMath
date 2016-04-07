@@ -1,16 +1,18 @@
 // apply is not a MatMath API function
 namespace _ {
-  template <typename T, unsigned H, unsigned W, typename Fun>
-  inline auto apply(mat::Matrix<T, H, W> const& m1, mat::Matrix<T, H, W> const& m2, Fun f) {
-    mat::Matrix<T, H, W> mat;
-    for (unsigned j{}; j < mat.height(); j++) {
-      for (unsigned i{}; i < mat.width(); i++) {
-       mat(j, i) = f(m1(j, i), m2(j, i));
-      }
+
+template <typename T, unsigned H, unsigned W, typename Fun>
+inline auto apply(mat::Matrix<T, H, W> const& m1, mat::Matrix<T, H, W> const& m2, Fun f) {
+  mat::Matrix<T, H, W> mat;
+  for (unsigned j{}; j < mat.height(); j++) {
+    for (unsigned i{}; i < mat.width(); i++) {
+      mat(j, i) = f(m1(j, i), m2(j, i));
     }
-    return mat;
   }
+  return mat;
 }
+
+} // namespace _
 
 template <typename T, unsigned H, unsigned W>
 inline auto operator+(mat::Matrix<T, H, W> const& m1, mat::Matrix<T, H, W> const& m2) {
