@@ -46,6 +46,11 @@ public:
   //! @returns Value at (y, x)
   //! @throws Anything as long as NO_TYPE_CHECK is not defined
   virtual T operator()(unsigned y, unsigned x) const noexcept(TYPE_CHECKED) = 0;
+
+  virtual IMatrix& operator+=(T const& val) noexcept(TYPE_CHECKED) = 0;
+  virtual IMatrix& operator-=(T const& val) noexcept(TYPE_CHECKED) = 0;
+  virtual IMatrix& operator*=(T const& val) noexcept(TYPE_CHECKED) = 0;
+  virtual IMatrix& operator/=(T const& val) noexcept(TYPE_CHECKED) = 0;
 };
 
 #endif // __IMATRIX_H__
