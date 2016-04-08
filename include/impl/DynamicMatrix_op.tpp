@@ -2,7 +2,7 @@
 namespace _ {
 
 template <typename T, typename Fun>
-inline auto apply(mat::IMatrix<T> const& m1, mat::IMatrix<T> const& m2, Fun f) {
+inline mat::DynamicMatrix<T> apply(mat::IMatrix<T> const& m1, mat::IMatrix<T> const& m2, Fun f) {
   assert(m1.height() == m2.height() && "Invalid size");
   assert(m1.width() == m2.width() && "Invalid size");
   mat::DynamicMatrix<T> mat(m1.height(), m1.width());
