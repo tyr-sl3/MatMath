@@ -7,7 +7,7 @@ FLAGS=-std=c++1y -Wall -Wextra -Werror -pedantic-errors \
 			-Winit-self -Wswitch-default -Wswitch-enum -Wundef \
 
 all: main.o
-  $(CC) -o $@ $^
+  $(CC) -o $(EXEC) $^
 
 main.o: example/main.cc
   $(CC) -o $@ -c $< $(FLAGS)
