@@ -10,7 +10,7 @@ all: main.o
 	$(CC) -o $(EXEC) $^
 
 main.o: example/main.cc
-	$(CC) -o $@ -c $< $(FLAGS)
+	$(CC) -I../include -o $@ -c $< $(FLAGS)
 
 clean:
 	@rm -rf src/*.o src/.*.h.swp src/.*.cc.swp $(EXEC)
