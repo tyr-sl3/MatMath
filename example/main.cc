@@ -1,6 +1,6 @@
 #include <iostream> // std::cout, std::cin, std::ostream
 
-#include <Matrix.h>        // mat::Matrix
+#include "../include/Matrix.h"        // mat::Matrix
 #include <DynamicMatrix.h> // mat::DynamicMatrix
 
 template <typename T>
