@@ -1,7 +1,7 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
-#include <IMatrix.h> // IMatrix
+#include "IMatrix.h" // IMatrix
 
 #include <algorithm> // std::for_each
 #include <array>     // std::array
@@ -89,7 +89,7 @@ private:
 
 } // namespace mat
 
-#include <impl/Matrix_impl.tpp> // Implementation
-#include <impl/Matrix_op.tpp>   // Operators
+#include "impl/Matrix_impl.tpp" // Implementation
+#include "impl/Matrix_op.tpp"   // Operators
 
 #endif // __MATRIX_H__
