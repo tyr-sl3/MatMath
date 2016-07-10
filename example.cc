@@ -1,7 +1,7 @@
 #include <iostream> // std::cout, std::cin, std::ostream
 
-#include <Matrix.h>        // mat::Matrix
-#include <DynamicMatrix.h> // mat::DynamicMatrix
+#include "include/Matrix.h"        // mat::Matrix
+#include "include/DynamicMatrix.h" // mat::DynamicMatrix
 
 template <typename T>
 std::ostream& operator<<(std::ostream& stream, mat::IMatrix<T> const& mat) {
