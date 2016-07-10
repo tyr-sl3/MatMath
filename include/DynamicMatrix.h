@@ -1,7 +1,7 @@
 #ifndef __DYNAMIC_MATRIX_H__
 #define __DYNAMIC_MATRIX_H__
 
-#include <IMatrix.h> // IMatrix 
+#include "IMatrix.h" // IMatrix 
 
 #include <algorithm> // std::for_each
 #include <cassert>   // assert
@@ -93,7 +93,7 @@ private:
 
 } // namespace mat
 
-#include <impl/DynamicMatrix_impl.tpp> // Implementation 
-#include <impl/DynamicMatrix_op.tpp>   // Operators 
+#include "impl/DynamicMatrix_impl.tpp" // Implementation 
+#include "impl/DynamicMatrix_op.tpp"   // Operators 
 
 #endif // __DYNAMIC_MATRIX_H__
