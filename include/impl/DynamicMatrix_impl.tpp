@@ -34,6 +34,9 @@ template <typename T>
 void mat::DynamicMatrix<T>::resize(unsigned height, unsigned width) {
   assert(height > 0 && "Matrix height can't be null");
   assert(width > 0 && "Matrix width can't be null");
+  if (height == height_ && width == width_) {
+    return;
+  }
   DynamicMatrix cpy(height, width);
   const auto min_height = height_ < height ? height_ : height;
   const auto min_width = width_ < width ? width_ : width;
