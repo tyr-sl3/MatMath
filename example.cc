@@ -39,6 +39,7 @@ int main() {
   std::cout << "mat3:\n" << mat3 << "\n";
   // We can multiply Matrix<T, H, W> by DynamicMatrix<T> if their dimensions are equal
   const auto product = mat1 * mat3;
+  std::cout << product << std::endl;
   mat3.resize(5, 5);
   /*
   mat3:
