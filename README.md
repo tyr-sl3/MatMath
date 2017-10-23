@@ -1,4 +1,4 @@
-# MatMath (Work in progress!) [![Build Status](https://travis-ci.org/tyr-sl3/MatMath.svg)](https://travis-ci.org/tyr-sl3/MatMath)
+# MatMath (Work in progress!) [![Build Status](https://travis-ci.org/vpenando/MatMath.svg)](https://travis-ci.org/vpenando/MatMath)
 C++ API for math operations on matrices written by Vincent P.
 There's two types of matrices:
 - Matrix: Buffer allocated on the stack => More exception safety
